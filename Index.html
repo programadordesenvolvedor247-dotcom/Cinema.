@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CINEMA EGITAO</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #0b0b0b;
+  font-family: Arial, sans-serif;
+  color: #fff;
+}
+
+/* HEADER */
+header {
+  background: #111;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #222;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* SEARCH */
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 8px 35px 8px 12px;
+  border-radius: 20px;
+  width: 180px;
+  outline: none;
+}
+
+.search-box span {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+/* GRID */
+.container {
+  max-width: 1300px;
+  margin: auto;
+  padding: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  cursor: pointer;
+  transition: transform .3s;
+}
+
+.card:hover { transform: scale(1.05); }
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+  aspect-ratio: 2/3;
+  object-fit: cover;
+  visibility: hidden; /* esconde até carregar */
+}
+
+.movie-title {
+  margin-top: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* PAGINAÇÃO */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.page-btn,
+.page-number {
+  background: #111;
+  border: 1px solid #222;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.page-btn:hover,
+.page-number:hover {
+  background: #1a1a1a;
+}
+
+.page-number.active {
+  background: #0d6efd;
+  border-color: #0d6efd;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 1000px;
+  position: relative;
+}
+
+.modal iframe {
+  width: 100%;
+  height: 56vw;
+  max-height: 560px;
+  border-radius: 10px;
+  border: none;
+}
+
+.close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  font-size: 30px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🎬 CINEMA EGITAO</div>
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Pesquisar filme...">
+    <span>🔍</span>
+  </div>
+</header>
+
+<div class="container">
+<div class="grid" id="movieGrid">
+
+<!-- Página 1: Chappie -->
+<div class="card" data-title="Chappie" onclick="openMovie('https://playerflixapi.com/filme/tt1823672')">
+  <img src="https://i.im.ge/2026/01/13/Gh97e6.Screenshot-20260112-213853-Chrome-1.md.jpeg" alt="Chappie">
+  <div class="movie-title">Chappie</div>
+</div>
+
+<!-- Página 1: Velozes & Furiosos -->
+<div class="card" data-title="Velozes & Furiosos" onclick="openMovie('https://playerflixapi.com/filme/tt1905041')">
+  <img src="https://i.im.ge/2026/01/13/Gh0C3q.Screenshot-20260112-212616-Chrome-1.md.jpeg">
+  <div class="movie-title">Velozes & Furiosos</div>
+</div>
+
+  <!-- Página 1: Primeiro card -->
+  <div class="card" data-title="A Era do Gelo: O Big Bang" onclick="openMovie('https://playerflixapi.com/filme/tt3416828')">
+    <img src="https://i.im.ge/2026/01/13/GhDpkW.Screenshot-20260112-204052-Chrome-1.md.jpeg">
+    <div class="movie-title">A Era do Gelo: O Big Bang</div>
+  </div>
+
+  <!-- Página 1: Segundo card -->
+  <div class="card" data-title="Homem de Ferro" onclick="openMovie('https://playerflixapi.com/filme/tt0371746')">
+    <img src="https://i.im.ge/2026/01/13/GhLVSm.Screenshot-20260112-205154-Chrome-1.md.jpeg">
+    <div class="movie-title">Homem de Ferro</div>
+  </div>
+
+<!-- Novo filme: O Touro Ferdinan... -->
+<div class="card" data-title="O Touro Ferdinan..." onclick="openMovie('https://playerflixapi.com/filme/tt3411444')">
+  <img src="https://i.im.ge/2026/01/13/Ghm8pL.Screenshot-20260112-215820-Chrome-1.md.jpeg" alt="O Touro Ferdinan...">
+  <div class="movie-title">O Touro Ferdinan...</div>
+</div>
+
+<!-- Novo filme: A Saga Crepúscu... -->
+<div class="card" data-title="A Saga Crepúscu..." onclick="openMovie('https://playerflixapi.com/filme/tt1259571')">
+  <img src="https://i.im.ge/2026/01/13/GhmZwx.Screenshot-20260112-220353-Chrome-1.md.jpeg" alt="A Saga Crepúscu...">
+  <div class="movie-title">A Saga Crepúscu...</div>
+</div>
+
+<!-- Filme: Pantera Negra (imagem atualizada) -->
+<div class="card" data-title="Pantera Negra" onclick="openMovie('https://playerflixapi.com/filme/tt1825683')">
+  <img src="https://i.im.ge/2026/01/13/Gh6gFG.Screenshot-20260112-223021-Chrome-1.md.jpeg" alt="Pantera Negra">
+  <div class="movie-title">Pantera Negra</div>
+</div>
+
+<!-- Filme: Crepúsculo (imagem atualizada) -->
+<div class="card" data-title="Crepúsculo" onclick="openMovie('https://playerflixapi.com/filme/tt1099212')">
+  <img src="https://i.im.ge/2026/01/13/Gh6hLY.Screenshot-20260112-222143-Chrome-1.md.jpeg" alt="Crepúsculo">
+  <div class="movie-title">Crepúsculo</div>
+</div>
+
+<!-- Filme: A Saga Crepúscu... (segundo filme) -->
+<div class="card" data-title="A Saga Crepúscu..." onclick="openMovie('https://playerflixapi.com/filme/tt1325004')">
+  <img src="https://i.im.ge/2026/01/13/Gh6sk9.Screenshot-20260112-221605-Chrome-1.md.jpeg" alt="A Saga Crepúscu...">
+  <div class="movie-title">A Saga Crepúscu...</div>
+</div>
+
+<!-- Filme: Pedro Coelho (imagem atualizada) -->
+<div class="card" data-title="Pedro Coelho" onclick="openMovie('https://playerflixapi.com/filme/tt5117670')">
+  <img src="https://i.im.ge/2026/01/13/Gh6r8J.Screenshot-20260112-220930-Chrome-2.md.jpeg" alt="Pedro Coelho">
+  <div class="movie-title">Pedro Coelho</div>
+</div>
+
+<!-- Novo filme: O Segredo dos A... -->
+<div class="card" data-title="O Segredo dos A..." onclick="openMovie('https://playerflixapi.com/filme/tt0414853')">
+  <img src="https://i.im.ge/2026/01/13/GhmgAc.Screenshot-20260112-214523-Chrome-2.md.jpeg" alt="O Segredo dos A...">
+  <div class="movie-title">O Segredo dos A...</div>
+</div>
+
+  <!-- Página 1: Terceiro card (Capitão América com nova imagem) -->
+  <div class="card" data-title="Capitão América" onclick="openMovie('https://playerflixapi.com/filme/tt1843866')">
+    <img src="https://i.im.ge/2026/01/13/GhheKS.Screenshot-20260112-205612-Chrome-1.md.jpeg">
+    <div class="movie-title">Capitão América</div>
+  </div>
+
+  <!-- DEMAIS FILMES -->
+  <div class="card" data-title="Um Sonho de Liberdade" onclick="openMovie('https://playerflixapi.com/filme/tt0111161')">
+    <img src="https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg">
+    <div class="movie-title">Um Sonho de Liberdade</div>
+  </div>
+
+  <div class="card" data-title="Batman Begins" onclick="openMovie('https://playerflixapi.com/filme/tt0372784')">
+    <img src="https://image.tmdb.org/t/p/w500/1P3ZyEq02wcTMd3iE4ebtLvncvH.jpg">
+    <div class="movie-title">Batman Begins</div>
+  </div>
+
+  <div class="card" data-title="Rango" onclick="openMovie('https://playerflixapi.com/filme/tt1192628')">
+    <img src="https://i.im.ge/2026/01/13/GUvBAD.Screenshot-20260112-172148-Chrome-1-2.jpeg">
+    <div class="movie-title">Rango</div>
+  </div>
+
+  <div class="card" data-title="Cinquenta Tons de Liberdade" onclick="openMovie('https://playerflixapi.com/filme/tt4477536')">
+    <img src="https://i.im.ge/2026/01/13/GUJQwq.Screenshot-20260112-173401-Chrome-1.th.jpeg">
+    <div class="movie-title">Cinquenta Tons de Liberdade</div>
+  </div>
+
+  <div class="card" data-title="Harry Potter e o Prisioneiro de Azkaban" onclick="openMovie('https://playerflixapi.com/filme/tt0304141')">
+    <img src="https://i.im.ge/2026/01/13/GUBbV6.Screenshot-20260112-180132-Chrome-1.md.jpeg">
+    <div class="movie-title">Harry Potter e o Prisioneiro de Azkaban</div>
+  </div>
+
+  <div class="card" data-title="O Mistério do Convento 2: Caçadora de Almas" onclick="openMovie('https://playerflixapi.com/filme/tt10053426')">
+    <img src="https://i.im.ge/2026/01/13/GUegGX.Screenshot-20260112-182733-Chrome-1.md.jpeg">
+    <div class="movie-title">O Mistério do Convento 2: Caçadora de Almas</div>
+  </div>
+
+  <div class="card" data-title="Mara" onclick="openMovie('https://playerflixapi.com/filme/tt13616444')">
+    <img src="https://i.im.ge/2026/01/13/GhrODF.Screenshot-20260112-190147-Chrome-1.md.jpeg">
+    <div class="movie-title">Mara</div>
+  </div>
+
+  <div class="card" data-title="Natal Sangrento" onclick="openMovie('https://playerflixapi.com/filme/tt34508974')">
+    <img src="https://i.im.ge/2026/01/13/Ghu6t9.Screenshot-20260112-191459-Chrome-1.md.jpeg">
+    <div class="movie-title">Natal Sangrento</div>
+  </div>
+
+  <div class="card" data-title="Panama" onclick="openMovie('https://playerflixapi.com/filme/tt2933004')">
+    <img src="https://i.im.ge/2026/01/13/Ghuyjh.Screenshot-20260112-192326-Chrome-1.md.jpeg">
+    <div class="movie-title">Panama</div>
+  </div>
+
+  <div class="card" data-title="A Presa" onclick="openMovie('https://playerflixapi.com/filme/tt3709442')">
+    <img src="https://i.im.ge/2026/01/13/GhOq6G.Screenshot-20260112-193733-Chrome-1-1.md.jpeg">
+    <div class="movie-title">A Presa</div>
+  </div>
+
+  <div class="card" data-title="Madulas" onclick="openMovie('https://playerflixapi.com/filme/tt38907021')">
+    <img src="https://i.im.ge/2026/01/13/GhSsVp.Screenshot-20260112-194915-Chrome-1.md.jpeg">
+    <div class="movie-title">Madulas</div>
+  </div>
+
+  <div class="card" data-title="Mamasan" onclick="openMovie('https://playerflixapi.com/filme/tt38608640')">
+    <img src="https://i.im.ge/2026/01/13/Ghdkha.Screenshot-20260112-195617-Chrome-1.md.jpeg">
+    <div class="movie-title">Mamasan</div>
+  </div>
+
+</div>
+
+<!-- PAGINAÇÃO -->
+<div class="pagination">
+  <button class="page-btn" id="prev">‹ Anterior</button>
+  <button class="page-number active" data-page="1">1</button>
+  <button class="page-number" data-page="2">2</button>
+  <button class="page-number" data-page="3">3</button> <!-- NOVO BOTÃO ADICIONADO -->
+  <button class="page-btn" id="next">Próxima ›</button>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="close" onclick="closeMovie()">✖</div>
+    <iframe id="player" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+const cards = document.querySelectorAll('.card');
+const search = document.getElementById('search');
+
+search.addEventListener('keyup', () => {
+  const v = search.value.toLowerCase();
+  cards.forEach(c => {
+    c.style.display = c.dataset.title.toLowerCase().includes(v) ? 'block' : 'none';
+  });
+});
+
+const modal = document.getElementById('modal');
+const player = document.getElementById('player');
+
+function openMovie(link){
+  modal.style.display = 'flex';
+  player.src = link;
+}
+
+function closeMovie(){
+  modal.style.display = 'none';
+  player.src = '';
+}
+
+modal.onclick = e => e.target === modal && closeMovie();
+
+/* PAGINAÇÃO */
+const perPage = 8;
+const pages = document.querySelectorAll('.page-number');
+let currentPage = 1;
+
+function showPage(p){
+  currentPage = p;
+  const start = (p-1)*perPage;
+  const end = start + perPage;
+  cards.forEach((c,i)=> c.style.display = i>=start && i<end ? 'block':'none');
+  pages.forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[data-page="${p}"]`).classList.add('active');
+}
+
+pages.forEach(b=>b.onclick=()=>showPage(+b.dataset.page));
+document.getElementById('prev').onclick = ()=> currentPage>1 && showPage(currentPage-1);
+document.getElementById('next').onclick = ()=> currentPage<pages.length && showPage(currentPage+1);
+
+// Mostrar página 1
+showPage(1);
+
+// Pré-carregar todas as imagens
+const cardImages = document.querySelectorAll('.card img');
+cardImages.forEach(img => {
+  const tempImg = new Image();
+  tempImg.src = img.src;
+  tempImg.onload = () => {
+    img.style.visibility = 'visible';
+  };
+});
+</script>
+
+</body>
+</html>
